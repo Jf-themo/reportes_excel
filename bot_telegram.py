@@ -1,18 +1,17 @@
-import re
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 from difflib import SequenceMatcher
-import json
 
 import pandas as pd
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN = "8770484638:AAFYQjU3SdO9O4c-Klgs4mwdY9xUxuSyGiA"
+TOKEN = os.environ.get('BOT_TOKEN', '8770484638:AAFYQjU3SdO9O4c-Klgs4mwdY9xUxuSyGiA')
 
 INVENTARIO_PATH = Path(__file__).parent / 'cod_prod_Tipicos.xlsx'
-SALIDA_PATH = Path('G:/Mi unidad/Tipicos del Valle/TipdelValle_Reportes/2026/Reportes_Bot')
+SALIDA_PATH = Path(os.environ.get('REPORTES_PATH', '/var/data/Reportes_Bot'))
 SALIDA_PATH.mkdir(parents=True, exist_ok=True)
 
 df_inventario = pd.read_excel(INVENTARIO_PATH)
@@ -222,6 +221,9 @@ def main():
     
     print("🤖 Bot Started. Enviame un mensaje!")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+if __name__ == '__main__':
+    main()
 
 if __name__ == '__main__':
     main()
