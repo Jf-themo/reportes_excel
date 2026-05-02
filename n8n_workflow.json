@@ -1,0 +1,52 @@
+{
+  "name": "Procesador Reportes WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": "files",
+        "path": "Pendientes",
+        "recursive": false,
+        "forceExecution": true
+      },
+      "id": "watch-files",
+      "name": "Watch Files",
+      "type": "n8n-nodes-base.fileNodes",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "watch-files"
+    },
+    {
+      "parameters": {
+        "command": "python"
+      },
+      "id": "execute-python",
+      "name": "Execute Python Script",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "path": "Reportes",
+        "fileName": "{{ $json.filename }}",
+        "data": "{{ $json.content }}"
+      },
+      "id": "write-file",
+      "name": "Write Excel",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Watch Files": {
+      "main": [[{"node": "Execute Python Script", "type": "main", "index": 0}]]
+    },
+    "Execute Python Script": {
+      "main": [[{"node": "Write Excel", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "procesador-whatsapp"
+}
